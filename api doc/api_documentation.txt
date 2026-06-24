@@ -1,0 +1,72 @@
+=============================================================
+  HappyReports API Documentation
+=============================================================
+
+This API is designed for the HappyReports website to securely 
+and easily fetch any data from the HappyCRM database.
+
+BASE URL: 
+https://happycrm.site/happyreports_api/index.php
+
+METHOD: 
+GET
+
+-------------------------------------------------------------
+  1. FETCH ALL DATA FROM A TABLE
+-------------------------------------------------------------
+To get data from any table, simply pass the table name using 
+the "?table=" parameter. By default, it returns up to 1000 records.
+
+Example (fetch all companies):
+GET /happyreports_api/index.php?table=company
+
+Example (fetch all products):
+GET /happyreports_api/index.php?table=products
+
+-------------------------------------------------------------
+  2. FETCH WITH A LIMIT
+-------------------------------------------------------------
+To limit the number of results, add the "&limit=" parameter.
+
+Example (fetch only 50 transactions):
+GET /happyreports_api/index.php?table=transactions&limit=50
+
+-------------------------------------------------------------
+  3. FETCH A SPECIFIC RECORD BY ID
+-------------------------------------------------------------
+To get a single specific record, add the "&id=" parameter.
+
+Example (fetch user with ID 12):
+GET /happyreports_api/index.php?table=users&id=12
+
+-------------------------------------------------------------
+  RESPONSE FORMAT
+-------------------------------------------------------------
+The API returns a JSON response:
+
+{
+  "status": "success",
+  "count": 2,
+  "data": [
+    {
+      "id": "1",
+      "name": "Example Company",
+      "email": "test@test.com"
+    },
+    ...
+  ]
+}
+
+If there's an error (e.g. missing table parameter), it returns:
+{
+  "status": "error",
+  "message": "Please specify a table by adding ?table=your_table_name to the URL"
+}
+
+-------------------------------------------------------------
+  IMPORTANT NOTES
+-------------------------------------------------------------
+- Cross-Origin Resource Sharing (CORS) is enabled (`Access-Control-Allow-Origin: *`) 
+  so your HappyReports website can access this data from a completely different domain.
+- Make sure the table names you pass exactly match the tables in your HappyCRM database.
+- For the full database structure (tables and columns), please refer to the database_schema.sql file in this folder.
