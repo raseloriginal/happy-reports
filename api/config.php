@@ -11,9 +11,19 @@ define('OPENAI_MODEL', 'gpt-4o-mini'); // cheapest capable model
 // ─── HappyCRM External API ───────────────────────────────────
 define('CRM_API_BASE', 'https://happycrm.site/happyreports_api/index.php');
 
-// ─── Local Database ──────────────────────────────────────────
-define('DB_HOST', 'localhost');
-define('DB_NAME', 'happy_bangladesh');
-define('DB_USER', 'root');
-define('DB_PASS', '');
+// ─── Database Configuration (Dynamic Local/Live) ──────────────
+$host = $_SERVER['HTTP_HOST'] ?? '';
+$isLocal = (strpos($host, 'localhost') !== false || $host === '127.0.0.1' || (empty($host) && PHP_SAPI === 'cli'));
+
+if ($isLocal) {
+    define('DB_HOST', 'localhost');
+    define('DB_NAME', 'happy_bangladesh');
+    define('DB_USER', 'root');
+    define('DB_PASS', '');
+} else {
+    define('DB_HOST', 'localhost');
+    define('DB_NAME', 'rasedwwq_hr');
+    define('DB_USER', 'rasedwwq_hr');
+    define('DB_PASS', ';(wtQK3qEA#XUL!L');
+}
 define('DB_CHARSET', 'utf8mb4');
