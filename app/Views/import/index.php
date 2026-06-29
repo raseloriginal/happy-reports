@@ -34,33 +34,41 @@
     <!-- Manual Deposit -->
     <div class="glass-panel rounded-2xl p-6">
         <h3 class="text-lg font-bold text-gray-800 mb-4 border-b pb-2">
-            <i class="fa-solid fa-building-columns text-primary mr-2"></i> Add Company Deposit
+            <i class="fa-solid fa-building-columns text-primary mr-2"></i> Add Company Deposit(s)
         </h3>
-        <form action="<?php echo URLROOT; ?>/import/addDeposit" method="POST" class="space-y-4">
-            <div class="grid grid-cols-2 gap-4">
-                <div>
-                    <label class="block text-sm font-medium text-gray-700">Company</label>
-                    <select id="company_select" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50 p-2 border">
-                        <option value="">Select Company</option>
-                    </select>
-                    <input type="hidden" name="company_name" id="company_name_input">
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-gray-700">Company CRM ID</label>
-                    <input type="text" name="company_crm_id" id="company_crm_id_input" readonly required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50 p-2 border bg-gray-100 cursor-not-allowed">
+        <form action="<?php echo URLROOT; ?>/import/addDeposit" method="POST" class="space-y-4" id="deposit_form">
+            <div id="deposit_rows">
+                <div class="deposit-row mb-4 relative pb-4 border-b border-gray-100">
+                    <button type="button" class="remove-deposit absolute top-0 right-0 text-red-500 hover:text-red-700 hidden" title="Remove"><i class="fa-solid fa-times"></i></button>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Company</label>
+                            <select name="company_select" required class="company-select mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50 p-2 border">
+                                <option value="">Select Company</option>
+                            </select>
+                            <input type="hidden" name="company_name[]" class="company-name-input">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Company CRM ID</label>
+                            <input type="text" name="company_crm_id[]" readonly required class="company-crm-id-input mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50 p-2 border bg-gray-100 cursor-not-allowed">
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4 mt-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Amount ($)</label>
+                            <input type="number" step="0.01" name="amount[]" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50 p-2 border">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Date</label>
+                            <input type="date" name="deposit_date[]" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50 p-2 border">
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="grid grid-cols-2 gap-4">
-                <div>
-                    <label class="block text-sm font-medium text-gray-700">Amount ($)</label>
-                    <input type="number" step="0.01" name="amount" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50 p-2 border">
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-gray-700">Date</label>
-                    <input type="date" name="deposit_date" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50 p-2 border">
-                </div>
-            </div>
-            <button type="submit" class="w-full bg-primary hover:bg-indigo-700 text-white font-medium py-2 px-4 rounded-lg transition">Save Deposit</button>
+            <button type="button" id="add_deposit_btn" class="w-full bg-gray-100 hover:bg-gray-200 text-gray-800 font-medium py-2 px-4 rounded-lg transition border border-gray-300 mb-2">
+                <i class="fa-solid fa-plus mr-2"></i> Add Another Deposit
+            </button>
+            <button type="submit" class="w-full bg-primary hover:bg-indigo-700 text-white font-medium py-2 px-4 rounded-lg transition">Save Deposit(s)</button>
         </form>
     </div>
 
@@ -103,31 +111,78 @@ document.addEventListener('DOMContentLoaded', function() {
     // Determine the base API URL (pointing to live CRM API)
     const apiUrlBase = 'https://happycrm.site/happyreports_api/index.php?table=';
 
+    // Global variable for company data
+    let companyOptions = [];
+
     // Fetch Companies
     fetch(apiUrlBase + 'companies')
         .then(response => response.json())
         .then(data => {
             if (data.status === 'success') {
-                const companySelect = document.getElementById('company_select');
-                data.data.forEach(company => {
-                    const option = document.createElement('option');
-                    option.value = company.id;
-                    option.textContent = company.company_name;
-                    companySelect.appendChild(option);
+                companyOptions = data.data;
+                const companySelects = document.querySelectorAll('.company-select');
+                companySelects.forEach(select => {
+                    companyOptions.forEach(company => {
+                        const option = document.createElement('option');
+                        option.value = company.id;
+                        option.textContent = company.company_name;
+                        select.appendChild(option);
+                    });
                 });
             }
         })
         .catch(error => console.error('Error fetching companies:', error));
 
-    // Handle Company Selection
-    document.getElementById('company_select').addEventListener('change', function() {
-        const selectedOption = this.options[this.selectedIndex];
-        if (selectedOption.value) {
-            document.getElementById('company_crm_id_input').value = selectedOption.value;
-            document.getElementById('company_name_input').value = selectedOption.textContent;
-        } else {
-            document.getElementById('company_crm_id_input').value = '';
-            document.getElementById('company_name_input').value = '';
+    // Handle Company Selection using event delegation
+    document.getElementById('deposit_rows').addEventListener('change', function(e) {
+        if (e.target.classList.contains('company-select')) {
+            const row = e.target.closest('.deposit-row');
+            const selectedOption = e.target.options[e.target.selectedIndex];
+            if (selectedOption.value) {
+                row.querySelector('.company-crm-id-input').value = selectedOption.value;
+                row.querySelector('.company-name-input').value = selectedOption.textContent;
+            } else {
+                row.querySelector('.company-crm-id-input').value = '';
+                row.querySelector('.company-name-input').value = '';
+            }
+        }
+    });
+
+    // Handle Add Another Deposit
+    document.getElementById('add_deposit_btn').addEventListener('click', function() {
+        const depositRows = document.getElementById('deposit_rows');
+        const firstRow = depositRows.querySelector('.deposit-row');
+        const newRow = firstRow.cloneNode(true);
+        
+        // Clear inputs in the new row
+        newRow.querySelectorAll('input').forEach(input => input.value = '');
+        newRow.querySelector('.company-select').selectedIndex = 0;
+        
+        // Show remove button
+        newRow.querySelector('.remove-deposit').classList.remove('hidden');
+        
+        depositRows.appendChild(newRow);
+        
+        // Also ensure remove buttons are visible if there is more than 1 row
+        const allRows = depositRows.querySelectorAll('.deposit-row');
+        if (allRows.length > 1) {
+            allRows.forEach(row => row.querySelector('.remove-deposit').classList.remove('hidden'));
+        }
+    });
+
+    // Handle Remove Deposit Row
+    document.getElementById('deposit_rows').addEventListener('click', function(e) {
+        if (e.target.closest('.remove-deposit') || e.target.closest('.remove-deposit i')) {
+            const depositRows = document.getElementById('deposit_rows');
+            const allRows = depositRows.querySelectorAll('.deposit-row');
+            if (allRows.length > 1) {
+                e.target.closest('.deposit-row').remove();
+            }
+            // Hide remove button if only 1 row left
+            const remainingRows = depositRows.querySelectorAll('.deposit-row');
+            if (remainingRows.length === 1) {
+                remainingRows[0].querySelector('.remove-deposit').classList.add('hidden');
+            }
         }
     });
 

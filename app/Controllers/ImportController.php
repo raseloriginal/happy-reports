@@ -63,13 +63,29 @@ class Import extends Controller {
 
     public function addDeposit() {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            $data = [
-                'company_crm_id' => trim($_POST['company_crm_id']),
-                'company_name' => trim($_POST['company_name']),
-                'amount' => floatval($_POST['amount']),
-                'deposit_date' => trim($_POST['deposit_date'])
-            ];
-            $this->depositModel->addDeposit($data);
+            if (isset($_POST['company_crm_id']) && is_array($_POST['company_crm_id'])) {
+                $count = count($_POST['company_crm_id']);
+                for ($i = 0; $i < $count; $i++) {
+                    if (!empty($_POST['company_crm_id'][$i]) && !empty($_POST['amount'][$i])) {
+                        $data = [
+                            'company_crm_id' => trim($_POST['company_crm_id'][$i]),
+                            'company_name' => trim($_POST['company_name'][$i]),
+                            'amount' => floatval($_POST['amount'][$i]),
+                            'deposit_date' => trim($_POST['deposit_date'][$i])
+                        ];
+                        $this->depositModel->addDeposit($data);
+                    }
+                }
+            } else {
+                // Fallback for single deposit just in case
+                $data = [
+                    'company_crm_id' => trim($_POST['company_crm_id']),
+                    'company_name' => trim($_POST['company_name']),
+                    'amount' => floatval($_POST['amount']),
+                    'deposit_date' => trim($_POST['deposit_date'])
+                ];
+                $this->depositModel->addDeposit($data);
+            }
             header('Location: ' . URLROOT . '/company');
         }
     }
