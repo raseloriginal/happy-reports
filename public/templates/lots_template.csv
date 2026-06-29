@@ -1,0 +1,4 @@
+CRM_ID,Warehouse_CRM_ID,Warehouse_Name,Company_CRM_ID,Company_Name,Lot_Value,Lot_Date
+L-001,W-100,Central Warehouse,C-500,Acme Corp,15000.00,2023-10-01
+L-002,W-101,North Hub,C-501,Globex,8500.50,2023-10-02
+L-003,W-100,Central Warehouse,C-502,Initech,22000.00,2023-10-03

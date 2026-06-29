@@ -1,0 +1,4 @@
+CRM_IDs,Company_CRM_ID,Company_Name,Total_Out,Total_In,Transaction_Date
+"T-01,T-02",C-500,Acme Corp,5000.00,12000.00,2023-10-05
+"T-03",C-501,Globex,2000.00,3500.00,2023-10-06
+"T-04,T-05,T-06",C-502,Initech,8000.00,25000.00,2023-10-07
