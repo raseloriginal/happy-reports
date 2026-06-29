@@ -8,7 +8,7 @@
     </div>
     <div class="glass-panel rounded-2xl p-6 border-l-4 border-green-500 hover:shadow-lg transition">
         <p class="text-sm text-gray-500 font-medium mb-1">Total Inventory Value</p>
-        <h3 class="text-2xl font-bold text-gray-800">$<?php echo number_format($data['apiData']['total_inventory_value'] ?? 0, 2); ?></h3>
+        <h3 class="text-2xl font-bold text-gray-800">৳<?php echo number_format($data['apiData']['total_inventory_value'] ?? 0, 2); ?></h3>
     </div>
 </div>
 
@@ -43,8 +43,8 @@
                         <tr class="bg-white border-b hover:bg-gray-50">
                             <td class="px-4 py-2 font-medium text-gray-900"><?php echo htmlspecialchars($product['name'] ?? ''); ?></td>
                             <td class="px-4 py-2 text-right font-bold text-blue-600"><?php echo number_format($product['qty'] ?? 0); ?></td>
-                            <td class="px-4 py-2 text-right text-green-600">$<?php echo number_format($product['revenue'] ?? 0, 2); ?></td>
-                            <td class="px-4 py-2 text-right font-bold text-indigo-600">$<?php echo number_format($product['profit'] ?? 0, 2); ?></td>
+                            <td class="px-4 py-2 text-right text-green-600">৳<?php echo number_format($product['revenue'] ?? 0, 2); ?></td>
+                            <td class="px-4 py-2 text-right font-bold text-indigo-600">৳<?php echo number_format($product['profit'] ?? 0, 2); ?></td>
                         </tr>
                         <?php endforeach; ?>
                     <?php else: ?>

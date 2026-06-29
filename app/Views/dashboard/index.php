@@ -7,7 +7,7 @@
         <div class="flex justify-between items-start">
             <div>
                 <p class="text-sm text-gray-500 font-medium mb-1">Total Revenue</p>
-                <h3 class="text-2xl font-bold text-gray-800">$<?php echo number_format($data['totalRevenue'], 2); ?></h3>
+                <h3 class="text-2xl font-bold text-gray-800">৳<?php echo number_format($data['totalRevenue'], 2); ?></h3>
             </div>
             <div class="p-3 bg-green-100 rounded-lg text-green-600">
                 <i class="fa-solid fa-arrow-trend-up"></i>
@@ -20,7 +20,7 @@
         <div class="flex justify-between items-start">
             <div>
                 <p class="text-sm text-gray-500 font-medium mb-1">Total Lots Value</p>
-                <h3 class="text-2xl font-bold text-gray-800">$<?php echo number_format($data['totalLots'], 2); ?></h3>
+                <h3 class="text-2xl font-bold text-gray-800">৳<?php echo number_format($data['totalLots'], 2); ?></h3>
             </div>
             <div class="p-3 bg-blue-100 rounded-lg text-blue-600">
                 <i class="fa-solid fa-boxes-stacked"></i>
@@ -33,7 +33,7 @@
         <div class="flex justify-between items-start">
             <div>
                 <p class="text-sm text-gray-500 font-medium mb-1">Dealer Payments</p>
-                <h3 class="text-2xl font-bold text-gray-800">$<?php echo number_format($data['totalDealerPayments'], 2); ?></h3>
+                <h3 class="text-2xl font-bold text-gray-800">৳<?php echo number_format($data['totalDealerPayments'], 2); ?></h3>
             </div>
             <div class="p-3 bg-orange-100 rounded-lg text-orange-600">
                 <i class="fa-solid fa-handshake"></i>
@@ -47,7 +47,7 @@
             <div>
                 <p class="text-sm text-gray-500 font-medium mb-1">Net Profit (incl. CRM Expenses)</p>
                 <h3 class="text-2xl font-bold <?php echo $data['netProfit'] >= 0 ? 'text-indigo-600' : 'text-red-600'; ?>">
-                    $<?php echo number_format($data['netProfit'], 2); ?>
+                    ৳<?php echo number_format($data['netProfit'], 2); ?>
                 </h3>
             </div>
             <div class="p-3 bg-indigo-100 rounded-lg text-indigo-600">
@@ -86,7 +86,7 @@
                             </div>
                         </div>
                         <div class="text-right">
-                            <span class="block text-sm font-bold text-gray-800">$<?php echo number_format($stat->total_value, 2); ?></span>
+                            <span class="block text-sm font-bold text-gray-800">৳<?php echo number_format($stat->total_value, 2); ?></span>
                         </div>
                     </li>
                     <?php endforeach; ?>

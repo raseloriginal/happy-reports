@@ -32,7 +32,7 @@
                         <tr class="bg-white border-b hover:bg-gray-50">
                             <td class="px-4 py-2 font-medium text-gray-900"><?php echo date('M d, Y', strtotime($dep->deposit_date)); ?></td>
                             <td class="px-4 py-2"><?php echo htmlspecialchars($dep->company_name); ?></td>
-                            <td class="px-4 py-2 text-right font-bold text-green-600">$<?php echo number_format($dep->amount, 2); ?></td>
+                            <td class="px-4 py-2 text-right font-bold text-green-600">৳<?php echo number_format($dep->amount, 2); ?></td>
                         </tr>
                         <?php endforeach; ?>
                     </tbody>
@@ -69,9 +69,9 @@
                         <td class="px-4 py-3"><?php echo date('M d, Y', strtotime($trans->transaction_date)); ?></td>
                         <td class="px-4 py-3 font-semibold text-primary"><?php echo htmlspecialchars($trans->company_name); ?></td>
                         <td class="px-4 py-3 text-xs"><?php echo htmlspecialchars(substr($trans->crm_ids, 0, 30) . (strlen($trans->crm_ids) > 30 ? '...' : '')); ?></td>
-                        <td class="px-4 py-3 text-right text-gray-600">$<?php echo number_format($trans->total_out_value, 2); ?></td>
-                        <td class="px-4 py-3 text-right text-green-600">$<?php echo number_format($trans->total_in_value, 2); ?></td>
-                        <td class="px-4 py-3 text-right font-bold <?php echo $plClass; ?>">$<?php echo number_format($pl, 2); ?></td>
+                        <td class="px-4 py-3 text-right text-gray-600">৳<?php echo number_format($trans->total_out_value, 2); ?></td>
+                        <td class="px-4 py-3 text-right text-green-600">৳<?php echo number_format($trans->total_in_value, 2); ?></td>
+                        <td class="px-4 py-3 text-right font-bold <?php echo $plClass; ?>">৳<?php echo number_format($pl, 2); ?></td>
                     </tr>
                     <?php endforeach; ?>
                 <?php endif; ?>

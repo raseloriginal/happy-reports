@@ -27,7 +27,7 @@
                             </div>
                         </div>
                         <div class="text-right">
-                            <span class="block text-sm font-bold text-gray-800">$<?php echo number_format($stat->total_paid, 2); ?></span>
+                            <span class="block text-sm font-bold text-gray-800">৳<?php echo number_format($stat->total_paid, 2); ?></span>
                         </div>
                     </li>
                     <?php endforeach; ?>
@@ -59,7 +59,7 @@
                             <td class="px-4 py-3"><?php echo date('M d, Y', strtotime($pay->payment_date)); ?></td>
                             <td class="px-4 py-3 font-semibold text-gray-800"><?php echo htmlspecialchars($pay->dealer_name); ?></td>
                             <td class="px-4 py-3 text-xs text-gray-400"><?php echo htmlspecialchars($pay->dealer_crm_id); ?></td>
-                            <td class="px-4 py-3 text-right font-bold text-orange-600">$<?php echo number_format($pay->amount, 2); ?></td>
+                            <td class="px-4 py-3 text-right font-bold text-orange-600">৳<?php echo number_format($pay->amount, 2); ?></td>
                         </tr>
                         <?php endforeach; ?>
                     <?php endif; ?>
