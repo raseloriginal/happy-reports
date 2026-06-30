@@ -22,19 +22,23 @@ class Import extends Controller {
             if (($handle = fopen($file, "r")) !== FALSE) {
                 fgetcsv($handle); // Skip header
                 while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
+                    // Skip empty rows or rows that don't have enough columns
+                    if (count($data) < 7) {
+                        continue;
+                    }
                     $lotData = [
                         'crm_id' => $data[0],
                         'warehouse_crm_id' => $data[1],
                         'warehouse_name' => $data[2],
                         'company_crm_id' => $data[3],
                         'company_name' => $data[4],
-                        'lot_value' => floatval($data[5]),
-                        'lot_date' => date('Y-m-d', strtotime($data[6]))
+                        'lot_value' => floatval($data[5] ?? 0),
+                        'lot_date' => date('Y-m-d', strtotime($data[6] ?? 'now'))
                     ];
                     $this->lotModel->addLot($lotData);
                 }
                 fclose($handle);
-                header('Location: ' . URLROOT . '/dashboard');
+                header('Location: ' . URLROOT . '/ledger');
             }
         }
     }
@@ -45,18 +49,22 @@ class Import extends Controller {
             if (($handle = fopen($file, "r")) !== FALSE) {
                 fgetcsv($handle); // Skip header
                 while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
+                    // Skip empty rows or rows that don't have enough columns
+                    if (count($data) < 6) {
+                        continue;
+                    }
                     $transData = [
                         'crm_ids' => $data[0],
                         'company_crm_id' => $data[1],
                         'company_name' => $data[2],
-                        'total_out_value' => floatval($data[3]),
-                        'total_in_value' => floatval($data[4]),
-                        'transaction_date' => date('Y-m-d', strtotime($data[5]))
+                        'total_out_value' => floatval($data[3] ?? 0),
+                        'total_in_value' => floatval($data[4] ?? 0),
+                        'transaction_date' => date('Y-m-d', strtotime($data[5] ?? 'now'))
                     ];
                     $this->transactionModel->addTransaction($transData);
                 }
                 fclose($handle);
-                header('Location: ' . URLROOT . '/company');
+                header('Location: ' . URLROOT . '/inventory');
             }
         }
     }
@@ -86,7 +94,7 @@ class Import extends Controller {
                 ];
                 $this->depositModel->addDeposit($data);
             }
-            header('Location: ' . URLROOT . '/company');
+            header('Location: ' . URLROOT . '/ledger');
         }
     }
 
