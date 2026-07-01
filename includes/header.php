@@ -197,6 +197,7 @@
         .td-num { text-align: right; font-variant-numeric: tabular-nums; }
         .td-green { color: var(--green); font-weight: 600; }
         .td-red { color: var(--red); font-weight: 600; }
+        .td-blue { color: #1a73e8; font-weight: 600; }
         .td-muted { color: var(--text-muted); }
         .td-badge {
             display: inline-block;
@@ -402,28 +403,29 @@
         </div>
         <nav>
             <div class="nav-section-label">Overview</div>
-            <a href="<?php echo URLROOT; ?>/dashboard" class="nav-link" id="nav-dashboard">
+            <a href="<?php echo URLROOT; ?>/index.php" class="nav-link" id="nav-dashboard">
                 <i class="fa-solid fa-gauge-high"></i> Dashboard
             </a>
 
             <div class="nav-section-label">CRM Data</div>
-            <a href="<?php echo URLROOT; ?>/company" class="nav-link" id="nav-company">
+            <a href="<?php echo URLROOT; ?>/company.php" class="nav-link" id="nav-company">
                 <i class="fa-solid fa-building"></i> Companies
             </a>
-            <a href="<?php echo URLROOT; ?>/dealer" class="nav-link" id="nav-dealer">
+            <a href="<?php echo URLROOT; ?>/dealers.php" class="nav-link" id="nav-dealer">
                 <i class="fa-solid fa-handshake"></i> Dealers
             </a>
-            <a href="<?php echo URLROOT; ?>/sr" class="nav-link" id="nav-sr">
+            <a href="<?php echo URLROOT; ?>/sr.php" class="nav-link" id="nav-sr">
                 <i class="fa-solid fa-user-tie"></i> Sales Reps
             </a>
 
             <div class="nav-section-label">Operations</div>
-            <a href="<?php echo URLROOT; ?>/inventory" class="nav-link" id="nav-inventory">
+            <a href="<?php echo URLROOT; ?>/inventory.php" class="nav-link" id="nav-inventory">
                 <i class="fa-solid fa-boxes-stacked"></i> Inventory
             </a>
-            <a href="<?php echo URLROOT; ?>/ledger" class="nav-link" id="nav-ledger">
+            <a href="<?php echo URLROOT; ?>/ledger.php" class="nav-link" id="nav-ledger">
                 <i class="fa-solid fa-book"></i> Company Ledger
             </a>
+
         </nav>
         <div id="sidebar-footer">&copy; 2026 CEO Panel</div>
     </aside>
@@ -432,7 +434,7 @@
     <div id="main-wrap">
         <!-- TOPBAR -->
         <header id="topbar">
-            <div class="page-title" id="pageTitle">Overview</div>
+            <div class="page-title" id="pageTitle"><?php echo isset($pageTitle) ? $pageTitle : 'Overview'; ?></div>
             <div class="topbar-right">
                 <span class="topbar-badge" id="topbar-date"></span>
                 <div class="topbar-user">
@@ -445,36 +447,3 @@
 
         <!-- PAGE CONTENT -->
         <main id="page-content">
-            <?php require_once '../app/Views/' . $view . '.php'; ?>
-        </main>
-    </div>
-
-    <script>
-        // Date in topbar
-        document.getElementById('topbar-date').textContent = new Date().toLocaleDateString('en-GB', { weekday:'short', year:'numeric', month:'short', day:'numeric' });
-
-        // Active nav
-        const path = window.location.pathname;
-        document.querySelectorAll('.nav-link').forEach(link => {
-            const href = link.getAttribute('href');
-            if (href && path.includes(href.replace(/.*\/public/, '')) && href !== '/') {
-                link.classList.add('active');
-            }
-        });
-        // Dashboard fallback
-        if (path.endsWith('/dashboard') || path.endsWith('/dashboard/')) {
-            document.getElementById('nav-dashboard')?.classList.add('active');
-        }
-
-        // Modal helpers
-        function openModal(id) { document.getElementById(id)?.classList.add('open'); }
-        function closeModal(id) { document.getElementById(id)?.classList.remove('open'); }
-        document.addEventListener('click', function(e) {
-            if (e.target.classList.contains('modal-overlay')) { e.target.classList.remove('open'); }
-            if (e.target.classList.contains('modal-close') || e.target.closest('.modal-close')) {
-                e.target.closest('.modal-overlay')?.classList.remove('open');
-            }
-        });
-    </script>
-</body>
-</html>

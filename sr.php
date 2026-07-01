@@ -1,5 +1,10 @@
-<script>document.getElementById('pageTitle').textContent = 'Sales Reps';</script>
+<?php
+require_once __DIR__ . '/includes/init.php';
 
+$pageTitle = 'Sales Reps';
+
+require_once __DIR__ . '/includes/header.php';
+?>
 <div class="xl-panel" style="margin:12px;">
     <div class="xl-panel-header">
         <div class="header-left">
@@ -35,8 +40,8 @@
     const countEl = document.getElementById('sr-count');
     try {
         const [srRes, dlRes] = await Promise.all([
-            fetch(CRM_API + '?table=sales_rep&limit=1000'),
-            fetch(CRM_API + '?table=dealers&limit=1000')
+            fetch(window.CRM_API + '?table=sales_rep&limit=1000'),
+            fetch(window.CRM_API + '?table=dealers&limit=1000')
         ]);
         const srJson = await srRes.json();
         const dlJson = await dlRes.json();
@@ -74,3 +79,4 @@
     }
 })();
 </script>
+<?php require_once __DIR__ . '/includes/footer.php'; ?>

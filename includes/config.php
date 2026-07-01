@@ -10,7 +10,7 @@ if ($isLocalhost) {
     define('DB_NAME', 'happy_reports');
     
     // Local URL Root
-    define('URLROOT', 'http://localhost/HappyReports/public');
+    define('URLROOT', 'http://localhost/HappyReports');
 } else {
     // Live Server DB Params
     define('DB_HOST', 'localhost'); // Usually localhost for live servers like cPanel

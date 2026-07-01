@@ -1,5 +1,52 @@
-<script>document.getElementById('pageTitle').textContent = 'Companies';</script>
+<?php
+require_once __DIR__ . '/includes/init.php';
 
+$pageTitle = 'Companies';
+
+$transactionModel = new Transaction();
+$depositModel = new Deposit();
+$lotModel = new Lot();
+
+$companyStats = $transactionModel->getCompanyStats();
+$transactions = $transactionModel->getTransactions();
+$deposits = $depositModel->getDeposits();
+
+$lotStats = $lotModel->getLotStatsByCompany();
+$depositStats = $depositModel->getDepositStatsByCompany();
+
+$combinedStats = [];
+
+// Helper function to initialize company if not exists
+$initCompany = function($id, $name) use (&$combinedStats) {
+    if (!isset($combinedStats[$id])) {
+        $combinedStats[$id] = [
+            'company_name' => $name,
+            'total_in' => 0,
+            'total_out' => 0,
+            'total_lots' => 0,
+            'total_deposits' => 0
+        ];
+    }
+};
+
+foreach ($companyStats as $cs) {
+    $initCompany($cs->company_crm_id, $cs->company_name);
+    $combinedStats[$cs->company_crm_id]['total_in'] = $cs->total_in;
+    $combinedStats[$cs->company_crm_id]['total_out'] = $cs->total_out;
+}
+
+foreach ($lotStats as $ls) {
+    $initCompany($ls->company_crm_id, $ls->company_name);
+    $combinedStats[$ls->company_crm_id]['total_lots'] = $ls->total_lots;
+}
+
+foreach ($depositStats as $ds) {
+    $initCompany($ds->company_crm_id, $ds->company_name);
+    $combinedStats[$ds->company_crm_id]['total_deposits'] = $ds->total_deposits;
+}
+
+require_once __DIR__ . '/includes/header.php';
+?>
 <div class="xl-panel" style="margin:12px;">
     <div class="xl-panel-header">
         <div class="header-left">
@@ -32,7 +79,7 @@
     const tbody = document.getElementById('co-tbody');
     const countEl = document.getElementById('co-count');
     try {
-        const res = await fetch(CRM_API + '?table=companies&limit=1000');
+        const res = await fetch(window.CRM_API + '?table=companies&limit=1000');
         const json = await res.json();
         if (json.status !== 'success' || !json.data.length) {
             tbody.innerHTML = '<tr><td colspan="3" class="text-center td-muted" style="padding:20px">No companies found.</td></tr>';
@@ -62,3 +109,4 @@
     }
 })();
 </script>
+<?php require_once __DIR__ . '/includes/footer.php'; ?>
